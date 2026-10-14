@@ -1,0 +1,23 @@
+CHUỒNG THÚ NHỎ – PHIÊN BẢN THEO DÕI NHÓM
+
+CÓ GÌ MỚI?
+- index.html: học sinh nhập tên nhóm; trò chơi giữ nguyên 4 hình ảnh gốc và âm thanh.
+- giao-vien.html: bảng theo dõi, cập nhật sau mỗi 8 giây.
+- Code.gs: máy chủ Google Apps Script nhận dữ liệu và ghi vào Google Sheets.
+- config.js: chỗ duy nhất cần dán đường link Apps Script.
+
+LÀM THEO THỨ TỰ:
+1) Tải toàn bộ 10 file phục vụ website (index.html, giao-vien.html, config.js, 4 ảnh con vật, ảnh nền, 3 âm thanh) lên GitHub kho CHUONG-THU-NHO. Không tải nguyên ZIP và không cần tải Code.gs, HUONG_DAN.txt lên GitHub.
+2) Vào https://sheets.new để tạo bảng Google Sheets mới. Đặt tên: Ket qua Chuong thu nho.
+3) Trong bảng, chọn Tiện ích mở rộng (Extensions) → Apps Script.
+4) Xóa mã mẫu trong Code.gs rồi dán toàn bộ nội dung file Code.gs có sẵn. Bấm Save.
+5) Chọn Deploy → New deployment → loại Web app. Execute as: Me. Who has access: Anyone (để máy học sinh không cần đăng nhập); lưu ý kết quả tên nhóm có thể được đọc qua địa chỉ công khai. Bấm Deploy, cho phép các quyền Google yêu cầu; sao chép URL kết thúc bằng /exec.
+6) Trên GitHub, mở config.js và bấm bút chì Edit. Dán URL /exec vào endpoint: 'https://script.google.com/macros/s/.../exec'. Giữ classCode. Bấm Commit changes.
+7) Đợi Vercel tự cập nhật. Học sinh: https://chuong-thu-nho.vercel.app/ ; Giáo viên: https://chuong-thu-nho.vercel.app/giao-vien.html
+8) Kiểm tra: học sinh nhập tên nhóm và ghép một đáp án; trên trang giáo viên bấm Cập nhật ngay hoặc đợi 8 giây.
+
+LƯU Ý:
+- Khi chưa làm bước 2–6, trò chơi vẫn chơi được nhưng trang giáo viên chưa nhận được dữ liệu.
+- Chỉ nhập tên nhóm, tránh họ tên học sinh và thông tin riêng tư. Đây là bảng xem bằng link, CHƯA có cơ chế đăng nhập hay phân quyền cho giáo viên.
+- Hệ thống ghi nhận kết quả thực hành, không phải công cụ thi cử chống gian lận. Dữ liệu gửi từ trình duyệt có thể bị thay đổi.
+- Nếu đổi mã Apps Script phải sửa config.js; nếu chỉnh Code.gs thì tạo phiên bản deployment mới.
