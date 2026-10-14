@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bảng theo dõi giáo viên – Chuồng thú nhỏ</title>
+<style>
+:root{
+  font-family: system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  color:#1f3550;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(234,250,255,.88),rgba(234,250,255,.88)),
+    url('nen-dong-co.png') center/cover fixed no-repeat;
+  padding:22px;
+}
+main{max-width:1180px;margin:auto}
+.hero{
+  background:rgba(255,255,255,.88);
+  border-radius:32px;
+  padding:24px 28px;
+  box-shadow:0 14px 40px rgba(30,111,104,.12);
+  border:3px solid rgba(255,255,255,.75);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before,.hero::after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(126,224,255,.14);
+  z-index:0;
+}
+.hero::before{top:-60px;right:-30px}
+.hero::after{bottom:-80px;left:-50px;background:rgba(255,223,116,.18)}
+.hero-inner{position:relative;z-index:1;display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.badge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#ffb24d,#ffde73);
+  color:#6b4200;
+  font-weight:900;
+  letter-spacing:.4px;
+  margin-bottom:12px;
+  box-shadow:0 6px 16px rgba(255,176,77,.25);
+}
+h1{
+  margin:0;
+  font-size:clamp(28px,4vw,46px);
+  line-height:1.08;
+  color:#0e7d73;
+  text-shadow:0 2px 0 rgba(255,255,255,.85);
+}
+.subtitle{
+  margin-top:10px;
+  font-size:clamp(17px,2vw,24px);
+  font-weight:800;
+  color:#ff6b4d;
+}
+.desc{
+  margin-top:8px;
+  max-width:780px;
+  color:#4b6570;
+  font-size:15px;
+}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn,a.linkbtn{
+  border:0;
+  border-radius:16px;
+  padding:12px 18px;
+  font-weight:900;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+}
+.btn{background:linear-gradient(90deg,#13b39b,#0d8ed0);color:white;box-shadow:0 10px 20px rgba(13,142,208,.2)}
+a.linkbtn{background:#fff;color:#16806a;border:2px solid #bfece2}
+.panels{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+.panel{
+  border-radius:24px;
+  padding:18px;
+  color:#1d3557;
+  box-shadow:0 10px 24px rgba(46,89,117,.10);
+  background:#fff;
+}
+.panel:nth-child(1){background:linear-gradient(135deg,#fff7c7,#ffe697)}
+.panel:nth-child(2){background:linear-gradient(135deg,#d9fff4,#bdf4e2)}
+.panel:nth-child(3){background:linear-gradient(135deg,#dff3ff,#c7e8ff)}
+.panel:nth-child(4){background:linear-gradient(135deg,#ffe1ef,#ffcde2)}
+.panel small{display:block;font-size:14px;font-weight:800;color:#536b76;margin-bottom:6px}
+.panel b{display:block;font-size:36px;line-height:1.1;color:#0f4e65}
+.status{
+  margin:8px 0 16px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 8px 18px rgba(0,0,0,.06);
+  font-weight:700;
+  color:#355461;
+}
+.board-wrap{
+  background:rgba(255,255,255,.92);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:0 12px 32px rgba(31,74,95,.12);
+  overflow:hidden;
+}
+.board-title{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.board-title h2{margin:0;font-size:25px;color:#145e7a}
+.note{font-size:13px;color:#627985}
+.table-box{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;text-align:left;min-width:740px}
+th,td{padding:14px 12px;border-bottom:1px solid #e5f0f4}
+th{
+  background:#ecfbff;
+  color:#0c6881;
+  font-size:15px;
+  font-weight:900;
+  position:sticky;
+  top:0;
+}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#fbfeff}
+.groupname{font-weight:900;color:#18455f}
+.tag{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  font-weight:900;
+  background:#eef6fb;
+  color:#44616e;
+}
+.tag.done{background:#daf8e4;color:#176640}
+.tag.playing{background:#fff0bf;color:#8d6200}
+.bar{
+  display:inline-flex;
+  vertical-align:middle;
+  width:120px;
+  height:12px;
+  margin-left:8px;
+  border-radius:999px;
+  background:#dfeaf1;
+  overflow:hidden;
+}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,#3cc39a,#17a2f2);border-radius:999px}
+.footer-note{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(255,255,255,.84);
+  color:#4e6773;
+  font-size:14px;
+}
+@media (max-width:900px){.panels{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){body{padding:10px}.hero{padding:18px}.panels{grid-template-columns:1fr}.board-wrap{padding:12px}th,td{padding:10px 8px;font-size:13px}.panel b{font-size:30px}}
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="badge">👩‍🏫 TRANG GIÁO VIÊN</div>
+        <h1>CHUỒNG THÚ NHỎ</h1>
+        <div class="subtitle">AI NẶNG BAO NHIÊU? – BẢNG THEO DÕI CÁC NHÓM</div>
+        <div class="desc">Theo dõi nhanh các nhóm học sinh tham gia trò chơi, số câu đúng, số lượt sai và trạng thái hoàn thành. Giao diện được thiết kế sáng rõ, dễ quan sát khi trình chiếu trong lớp.</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="refresh">↻ Cập nhật ngay</button>
+        <a class="linkbtn" href="./index.html">🎮 Mở trò chơi học sinh</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="panels">
+    <div class="panel"><small>Nhóm tham gia</small><b id="total">0</b></div>
+    <div class="panel"><small>Nhóm hoàn thành</small><b id="done">0</b></div>
+    <div class="panel"><small>Tổng lượt sai</small><b id="wrong">0</b></div>
+    <div class="panel"><small>Cập nhật tự động</small><b>8s</b></div>
+  </section>
+
+  <div class="status" id="status">Đang tải kết quả…</div>
+
+  <section class="board-wrap">
+    <div class="board-title">
+      <h2>📋 Danh sách nhóm học sinh</h2>
+      <div class="note">Mỗi nhóm hiển thị lượt chơi gần nhất</div>
+    </div>
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Tên nhóm</th>
+            <th>Tiến độ</th>
+            <th>Số đúng</th>
+            <th>Số sai</th>
+            <th>Trạng thái</th>
+            <th>Cập nhật</th>
+          </tr>
+        </thead>
+        <tbody id="rows"><tr><td colspan="6">Chưa có dữ liệu.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer-note">Lưu ý: chỉ nên cho học sinh nhập <b>tên nhóm</b>, không nhập tên riêng. Trang giáo viên không có đăng nhập; ai có liên kết đều có thể xem bảng theo dõi.</div>
+</main>
+
+<script src="config.js"></script>
+<script>
+const cfg=window.GAME_CONFIG||{}, endpoint=(cfg.endpoint||'').trim(), classCode=cfg.classCode||'lop4';
+let busy=false;
+
+function render(data){
+  const rows = Array.isArray(data.rows) ? data.rows : [];
+  document.getElementById('total').textContent = rows.length;
+  document.getElementById('done').textContent = rows.filter(x => Number(x.correct) >= 4).length;
+  document.getElementById('wrong').textContent = rows.reduce((n, x) => n + (Number(x.wrong) || 0), 0);
+
+  const tbody = document.getElementById('rows');
+  tbody.replaceChildren();
+
+  if(!rows.length){
+    const tr=document.createElement('tr');
+    const td=document.createElement('td');
+    td.colSpan=6;
+    td.textContent='Chưa có nhóm nào gửi kết quả.';
+    tr.append(td);
+    tbody.append(tr);
+  }
+
+  rows.sort((a,b)=>(b.updated||0)-(a.updated||0)).forEach(r=>{
+    const tr=document.createElement('tr');
+
+    const values=[
+      r.group || '',
+      `${Number(r.correct)||0}/4`,
+      String(Number(r.correct)||0),
+      String(Number(r.wrong)||0),
+      Number(r.correct)>=4 ? 'Hoàn thành' : 'Đang chơi',
+      r.updated ? new Date(r.updated).toLocaleTimeString('vi-VN') : ''
+    ];
+
+    values.forEach((x,i)=>{
+      const td=document.createElement('td');
+      if(i===0){
+        td.innerHTML='<span class="groupname">'+x+'</span>';
+      }else if(i===1){
+        const wrap=document.createElement('div');
+        wrap.textContent=x+' ';
+        const bar=document.createElement('div');
+        bar.className='bar';
+        const span=document.createElement('span');
+        span.style.width=Math.max(0,Math.min(100,(Number(r.correct)||0)*25))+'%';
+        bar.append(span);
+        wrap.append(bar);
+        td.append(wrap);
+      }else if(i===4){
+        const st=document.createElement('span');
+        st.className='tag '+(Number(r.correct)>=4?'done':'playing');
+        st.textContent=x;
+        td.append(st);
+      }else{
+        td.textContent=x;
+      }
+      tr.append(td);
+    });
+    tbody.append(tr);
+  });
+
+  document.getElementById('status').textContent='✅ Đã nhận dữ liệu · cập nhật lúc ' + new Date().toLocaleTimeString('vi-VN');
+}
+
+function refresh(){
+  if(busy) return;
+  if(!endpoint){
+    document.getElementById('status').textContent='⚠️ Chưa kết nối Google Sheets. Hãy thiết lập config.js theo file HUONG_DAN.txt.';
+    return;
+  }
+  busy=true;
+  const cb='gameCB'+Date.now();
+  const script=document.createElement('script');
+  const timer=setTimeout(()=>finish('Không nhận được dữ liệu. Kiểm tra Apps Script và quyền truy cập.'),12000);
+
+  function finish(msg){
+    clearTimeout(timer);
+    busy=false;
+    delete window[cb];
+    script.remove();
+    if(msg) document.getElementById('status').textContent='⚠️ '+msg;
+  }
+
+  window[cb]=function(payload){ render(payload); finish(); };
+  script.onerror=()=>finish('Không tải được dữ liệu từ máy chủ.');
+  script.src=endpoint+'?action=results&classCode='+encodeURIComponent(classCode)+'&callback='+cb+'&t='+Date.now();
+  document.head.append(script);
+}
+
+document.getElementById('refresh').onclick=refresh;
+refresh();
+setInterval(refresh,8000);
+</script>
+</body>
+</html>
